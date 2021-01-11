@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class MyApp extends StatefulWidget {
@@ -10,39 +12,74 @@ class _MyAppState extends State<MyApp> {
     height: 15,
   );
 
-  String res = "0";
-  int a, b;
-  String op = "";
+  String res = "";
   String val = "";
+  String op = "";
+  String B = "";
+  int a, b;
+  bool equalpressed = false;
+
+  String resCal(int a, int b, String op) {
+    if (op == '+')
+      return (a + b).toString();
+    else if (op == '-')
+      return (a - b).toString();
+    else if (op == '×')
+      return (a * b).toString();
+    else if (op == '÷')
+      return (a / b).toString();
+    else if (op == '^') return pow(a, b).toString();
+  }
+
+  void buttonAction(String text) {
+    if (text == "AC") {
+      val = "";
+      res = "";
+      op = "";
+      B = "";
+      a = null;
+    } else if (text == "=") {
+      res = resCal(a, b, op);
+      B = "";
+      equalpressed = true;
+    } else if (text == '%') {
+      a = a / 100;
+      op = '×';
+    } else if (text == '+' ||
+        text == '-' ||
+        text == '×' ||
+        text == '÷' ||
+        text == '^') {
+      if (op != "" && a != null) {
+        res = resCal(a, b, op);
+        a = int.parse(res);
+      }
+      op = text;
+      if (equalpressed == true)
+        val = res + text;
+      else
+        val += text;
+      B = "";
+      equalpressed = false;
+    } else {
+      val += text;
+      if (op == '-' && a == null) {
+        a = 0 - int.parse(text);
+        op = "";
+      }
+      if (op == "")
+        a = int.parse(val);
+      else {
+        B += text;
+        b = int.parse(B);
+      }
+    }
+  }
 
   Widget button(String text, Color buttoncolor) {
     return RaisedButton(
       onPressed: () {
-        if (text == "AC") {
-          val = "";
-          res = "0";
-          op = "";
-        } else if (text == "=") {
-          if (op == "+")
-            res = (a + b).toString();
-          else if (op == "-")
-            res = (a - b).toString();
-          else if (op == "×")
-            res = (a * b).toString();
-          else if (op == "÷") res = (a / b).toString();
-          op = "";
-        } else if (text == "+" || text == "-" || text == "×" || text == "÷") {
-          val = val + text;
-          op = text;
-        } else {
-          if (op == "") {
-            val = val + text;
-            a = int.parse(val);
-          } else {
-            val = val + text;
-            b = int.parse(text);
-          }
-        }
+        buttonAction(text);
         setState(() {});
       },
       child: Text(
@@ -78,7 +115,7 @@ class _MyAppState extends State<MyApp> {
                   Text(
                     val,
                     style: TextStyle(
-                        fontSize: 45,
+                        fontSize: 40,
                         color: Colors.white60,
                         fontFamily: 'WorkSans-Light'),
                     textAlign: TextAlign.right,
@@ -86,7 +123,7 @@ class _MyAppState extends State<MyApp> {
                   Text(
                     res,
                     style: TextStyle(
-                        fontSize: 70,
+                        fontSize: 65,
                         color: Colors.white60,
                         fontFamily: 'WorkSans-Light'),
                     textAlign: TextAlign.right,
@@ -116,7 +153,20 @@ class _MyAppState extends State<MyApp> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          val = val.substring(0, val.length - 1);
+                          if (op == "")
+                            a = int.parse(val);
+                          else {
+                            if (B == "")
+                              op = "";
+                            else {
+                              B = B.substring(0, B.length - 1);
+                              b = int.parse(B);
+                            }
+                          }
+                          setState(() {});
+                        },
                         child: Icon(
                           Icons.backspace_outlined,
                           color: Colors.white60,
@@ -129,7 +179,7 @@ class _MyAppState extends State<MyApp> {
                         elevation: 12,
                       ),
                       button("^", Colors.white60),
-                      button("√", Colors.white60),
+                      button("%", Colors.white60),
                       button("÷", Colors.amber[400])
                     ],
                   ),
