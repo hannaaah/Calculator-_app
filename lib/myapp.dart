@@ -16,10 +16,10 @@ class _MyAppState extends State<MyApp> {
   String val = "";
   String op = "";
   String B = "";
-  int a, b;
+  double a, b;
   bool equalpressed = false;
 
-  String resCal(int a, int b, String op) {
+  String resCal(double a, double b, String op) {
     if (op == '+')
       return (a + b).toString();
     else if (op == '-')
@@ -38,13 +38,11 @@ class _MyAppState extends State<MyApp> {
       op = "";
       B = "";
       a = null;
+      equalpressed = false;
     } else if (text == "=") {
       res = resCal(a, b, op);
       B = "";
       equalpressed = true;
-    } else if (text == '%') {
-      a = a / 100;
-      op = '×';
     } else if (text == '+' ||
         text == '-' ||
         text == '×' ||
@@ -52,7 +50,7 @@ class _MyAppState extends State<MyApp> {
         text == '^') {
       if (op != "" && a != null) {
         res = resCal(a, b, op);
-        a = int.parse(res);
+        a = double.parse(res);
       }
       op = text;
       if (equalpressed == true)
@@ -61,19 +59,28 @@ class _MyAppState extends State<MyApp> {
         val += text;
       B = "";
       equalpressed = false;
+    } else if (text == '.') {
+      val += text;
+      if (op != "") B += text;
+    } else if (text == '%') {
+      a /= 100;
+      op = '×';
+      val += text;
     } else {
       val += text;
       if (op == '-' && a == null) {
-        a = 0 - int.parse(text);
+        a = 0 - double.parse(text);
         op = "";
       }
       if (op == "")
-        a = int.parse(val);
+        a = double.parse(val);
       else {
         B += text;
-        b = int.parse(B);
+        b = double.parse(B);
       }
     }
+    if (res.length - res.indexOf('.') > 3)
+      res = double.parse(res).toStringAsFixed(4);
   }
 
   Widget button(String text, Color buttoncolor) {
@@ -101,7 +108,7 @@ class _MyAppState extends State<MyApp> {
       backgroundColor: Colors.grey[900],
       body: Padding(
         padding: EdgeInsets.only(
-          top: 50,
+          top: 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,123 +116,126 @@ class _MyAppState extends State<MyApp> {
           children: [
             Padding(
               padding: EdgeInsets.only(right: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    val,
-                    style: TextStyle(
-                        fontSize: 40,
-                        color: Colors.white60,
-                        fontFamily: 'WorkSans-Light'),
-                    textAlign: TextAlign.right,
-                  ),
-                  Text(
-                    res,
-                    style: TextStyle(
-                        fontSize: 65,
-                        color: Colors.white60,
-                        fontFamily: 'WorkSans-Light'),
-                    textAlign: TextAlign.right,
-                  )
-                ],
+              child: Container(
+                height: 235,
+                child: SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          val,
+                          style: TextStyle(
+                              fontSize: 40,
+                              color: Colors.white54,
+                              fontFamily: 'WorkSans-Light'),
+                          textAlign: TextAlign.right,
+                        ),
+                        Text(
+                          res,
+                          style: TextStyle(
+                              fontSize: 65,
+                              color: Colors.white60,
+                              fontFamily: 'WorkSans-Light'),
+                          textAlign: TextAlign.right,
+                        ),
+                      ]),
+                ),
               ),
             ),
             SizedBox(
-              height: 100,
+              height: 20,
             ),
             Container(
-              padding:
-                  EdgeInsets.only(top: 35, bottom: 24, left: 12, right: 12),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      spreadRadius: 2.1,
-                      color: Colors.grey[850],
-                      blurRadius: 1.0)
-                ],
-                color: Colors.grey[900],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RaisedButton(
-                        onPressed: () {
-                          val = val.substring(0, val.length - 1);
-                          if (op == "")
-                            a = int.parse(val);
-                          else {
-                            if (B == "")
-                              op = "";
+                padding:
+                    EdgeInsets.only(top: 35, bottom: 24, left: 12, right: 12),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        spreadRadius: 2.1,
+                        color: Colors.grey[850],
+                        blurRadius: 1.0)
+                  ],
+                  color: Colors.grey[900],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RaisedButton(
+                          onPressed: () {
+                            val = val.substring(0, val.length - 1);
+                            if (op == "")
+                              a = double.parse(val);
                             else {
-                              B = B.substring(0, B.length - 1);
-                              b = int.parse(B);
+                              if (B == "")
+                                op = "";
+                              else {
+                                B = B.substring(0, B.length - 1);
+                                b = double.parse(B);
+                              }
                             }
-                          }
-                          setState(() {});
-                        },
-                        child: Icon(
-                          Icons.backspace_outlined,
-                          color: Colors.white60,
-                          size: 27,
+                            setState(() {});
+                          },
+                          child: Icon(
+                            Icons.backspace_outlined,
+                            color: Colors.white60,
+                            size: 27,
+                          ),
+                          shape: CircleBorder(),
+                          color: Colors.grey[900],
+                          splashColor: Colors.black26,
+                          padding: EdgeInsets.all(24),
+                          elevation: 12,
                         ),
-                        shape: CircleBorder(),
-                        color: Colors.grey[900],
-                        splashColor: Colors.black26,
-                        padding: EdgeInsets.all(24),
-                        elevation: 12,
-                      ),
-                      button("^", Colors.white60),
-                      button("%", Colors.white60),
-                      button("÷", Colors.amber[400])
-                    ],
-                  ),
-                  sizedbox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      button("7", Colors.white),
-                      button("8", Colors.white),
-                      button("9", Colors.white),
-                      button("×", Colors.amber[400])
-                    ],
-                  ),
-                  sizedbox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      button("4", Colors.white),
-                      button("5", Colors.white),
-                      button("6", Colors.white),
-                      button("-", Colors.amber[400])
-                    ],
-                  ),
-                  sizedbox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      button("1", Colors.white),
-                      button("2", Colors.white),
-                      button("3", Colors.white),
-                      button("+", Colors.amber[400])
-                    ],
-                  ),
-                  sizedbox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      button("AC", Colors.white60),
-                      button("0", Colors.white),
-                      button(".", Colors.white),
-                      button("=", Colors.amber[400])
-                    ],
-                  )
-                ],
-              ),
-            ),
+                        button("^", Colors.white60),
+                        button("%", Colors.white60),
+                        button("÷", Colors.amber[400])
+                      ],
+                    ),
+                    sizedbox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        button("7", Colors.white),
+                        button("8", Colors.white),
+                        button("9", Colors.white),
+                        button("×", Colors.amber[400])
+                      ],
+                    ),
+                    sizedbox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        button("4", Colors.white),
+                        button("5", Colors.white),
+                        button("6", Colors.white),
+                        button("-", Colors.amber[400])
+                      ],
+                    ),
+                    sizedbox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        button("1", Colors.white),
+                        button("2", Colors.white),
+                        button("3", Colors.white),
+                        button("+", Colors.amber[400])
+                      ],
+                    ),
+                    sizedbox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        button("AC", Colors.white60),
+                        button("0", Colors.white),
+                        button(".", Colors.white),
+                        button("=", Colors.amber[400])
+                      ],
+                    ),
+                  ],
+                ))
           ],
         ),
       ),
