@@ -6,5 +6,6 @@ void main() {
   runApp(MaterialApp(
     home: MyApp(),
     debugShowCheckedModeBanner: false,
+    theme: ThemeData(accentColor: Colors.grey[400]),
   ));
 }
