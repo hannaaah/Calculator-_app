@@ -19,6 +19,10 @@ class _MyAppState extends State<MyApp> {
   String B = "";
   double a, b;
   bool equalpressed = false;
+  double ressize = 35;
+  double expsize = 40;
+  Color expcolor = Colors.white54;
+  Color rescolor = Colors.white24;
 
   String resCal(double a, double b, String op) {
     String res;
@@ -44,8 +48,16 @@ class _MyAppState extends State<MyApp> {
       B = "";
       a = null;
       equalpressed = false;
+      ressize = 35;
+      expsize = 40;
+      rescolor = Colors.white24;
+      expcolor = Colors.white54;
     } else if (text == "=") {
       res = resCal(a, b, op);
+      ressize = 63;
+      expsize = 35;
+      rescolor = Colors.white60;
+      expcolor = Colors.white38;
       B = "";
       equalpressed = true;
     } else if (text == '+' ||
@@ -63,6 +75,10 @@ class _MyAppState extends State<MyApp> {
         val += text;
       B = "";
       equalpressed = false;
+      ressize = 35;
+      expsize = 40;
+      rescolor = Colors.white24;
+      expcolor = Colors.white54;
     } else if (text == '.') {
       val += text;
       if (op != "") B += text;
@@ -111,7 +127,7 @@ class _MyAppState extends State<MyApp> {
       backgroundColor: Colors.grey[900],
       body: Padding(
         padding: EdgeInsets.only(
-          top: 15,
+          top: 13,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,7 +136,7 @@ class _MyAppState extends State<MyApp> {
             Padding(
               padding: EdgeInsets.only(right: 10, left: 8),
               child: Container(
-                height: 235,
+                height: 246,
                 child: SingleChildScrollView(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,16 +144,16 @@ class _MyAppState extends State<MyApp> {
                         Text(
                           val,
                           style: TextStyle(
-                              fontSize: 40,
-                              color: Colors.white54,
+                              fontSize: expsize,
+                              color: expcolor,
                               fontFamily: 'WorkSans-Light'),
                           textAlign: TextAlign.right,
                         ),
                         Text(
                           res,
                           style: TextStyle(
-                              fontSize: 65,
-                              color: Colors.white60,
+                              fontSize: ressize,
+                              color: rescolor,
                               fontFamily: 'WorkSans-Light'),
                           textAlign: TextAlign.right,
                         ),
@@ -154,7 +170,7 @@ class _MyAppState extends State<MyApp> {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                        spreadRadius: 2.7,
+                        spreadRadius: 2.8,
                         color: Colors.grey[850],
                         blurRadius: 1.3)
                   ],
