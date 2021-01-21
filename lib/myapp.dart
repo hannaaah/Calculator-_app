@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -20,15 +21,19 @@ class _MyAppState extends State<MyApp> {
   bool equalpressed = false;
 
   String resCal(double a, double b, String op) {
+    String res;
     if (op == '+')
-      return (a + b).toString();
+      res = (a + b).toString();
     else if (op == '-')
-      return (a - b).toString();
+      res = (a - b).toString();
     else if (op == '×')
-      return (a * b).toString();
+      res = (a * b).toString();
     else if (op == '÷')
-      return (a / b).toString();
-    else if (op == '^') return pow(a, b).toString();
+      res = (a / b).toString();
+    else if (op == '^') res = pow(a, b).toString();
+    if (res.length - res.indexOf('.') > 3)
+      res = double.parse(res).toStringAsFixed(4);
+    return res;
   }
 
   void buttonAction(String text) {
@@ -49,7 +54,6 @@ class _MyAppState extends State<MyApp> {
         text == '÷' ||
         text == '^') {
       if (op != "" && a != null) {
-        res = resCal(a, b, op);
         a = double.parse(res);
       }
       op = text;
@@ -77,10 +81,9 @@ class _MyAppState extends State<MyApp> {
       else {
         B += text;
         b = double.parse(B);
+        res = resCal(a, b, op);
       }
     }
-    if (res.length - res.indexOf('.') > 3)
-      res = double.parse(res).toStringAsFixed(4);
   }
 
   Widget button(String text, Color buttoncolor) {
@@ -97,8 +100,8 @@ class _MyAppState extends State<MyApp> {
       shape: CircleBorder(),
       color: Colors.grey[900],
       splashColor: Colors.black26,
-      padding: EdgeInsets.all(18),
-      elevation: 12,
+      padding: EdgeInsets.all(17.5),
+      elevation: 8,
     );
   }
 
@@ -115,7 +118,7 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.only(right: 10, left: 8),
               child: Container(
                 height: 235,
                 child: SingleChildScrollView(
@@ -151,9 +154,9 @@ class _MyAppState extends State<MyApp> {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                        spreadRadius: 2.1,
+                        spreadRadius: 2.7,
                         color: Colors.grey[850],
-                        blurRadius: 1.0)
+                        blurRadius: 1.3)
                   ],
                   color: Colors.grey[900],
                 ),
@@ -174,20 +177,21 @@ class _MyAppState extends State<MyApp> {
                               else {
                                 B = B.substring(0, B.length - 1);
                                 b = double.parse(B);
+                                res = resCal(a, b, op);
                               }
                             }
                             setState(() {});
                           },
                           child: Icon(
                             Icons.backspace_outlined,
-                            color: Colors.white60,
+                            color: Colors.white54,
                             size: 27,
                           ),
                           shape: CircleBorder(),
                           color: Colors.grey[900],
                           splashColor: Colors.black26,
-                          padding: EdgeInsets.all(24),
-                          elevation: 12,
+                          padding: EdgeInsets.all(23),
+                          elevation: 8,
                         ),
                         button("^", Colors.white60),
                         button("%", Colors.white60),
