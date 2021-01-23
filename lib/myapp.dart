@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   String B = "";
   double a, b;
   bool equalpressed = false;
-  double ressize = 35;
+  double ressize = 33;
   double expsize = 40;
   Color expcolor = Colors.white54;
   Color rescolor = Colors.white24;
@@ -48,14 +48,14 @@ class _MyAppState extends State<MyApp> {
       B = "";
       a = null;
       equalpressed = false;
-      ressize = 35;
+      ressize = 33;
       expsize = 40;
       rescolor = Colors.white24;
       expcolor = Colors.white54;
     } else if (text == "=") {
       res = resCal(a, b, op);
       ressize = 63;
-      expsize = 35;
+      expsize = 34;
       rescolor = Colors.white60;
       expcolor = Colors.white38;
       B = "";
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         val += text;
       B = "";
       equalpressed = false;
-      ressize = 35;
+      ressize = 33;
       expsize = 40;
       rescolor = Colors.white24;
       expcolor = Colors.white54;
@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> {
       shape: CircleBorder(),
       color: Colors.grey[900],
       splashColor: Colors.black26,
-      padding: EdgeInsets.all(17.5),
+      padding: EdgeInsets.all(18),
       elevation: 8,
     );
   }
@@ -127,7 +127,7 @@ class _MyAppState extends State<MyApp> {
       backgroundColor: Colors.grey[900],
       body: Padding(
         padding: EdgeInsets.only(
-          top: 13,
+          top: 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -136,7 +136,7 @@ class _MyAppState extends State<MyApp> {
             Padding(
               padding: EdgeInsets.only(right: 10, left: 8),
               child: Container(
-                height: 246,
+                height: 236,
                 child: SingleChildScrollView(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -166,7 +166,7 @@ class _MyAppState extends State<MyApp> {
             ),
             Container(
                 padding:
-                    EdgeInsets.only(top: 35, bottom: 24, left: 12, right: 12),
+                    EdgeInsets.only(top: 35, bottom: 24, left: 5, right: 5),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
